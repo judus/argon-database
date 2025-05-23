@@ -1,3 +1,44 @@
+# Dependencies
+/vendor/
+
+# Build artifacts
+/build/
+/dist/
+
+# Composer files
+composer.lock
+
+# IDE/editor specific
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# PHPUnit
 .phpunit.result.cache
-vendor
-build
+coverage.xml
+
+# Cache, logs, sessions
+*.log
+logs/
+tmp/
+temp/
+cache/
+sessions/
+
+# Environment files
+.env
+.env.*
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Runtime data
+*.sqlite
+*.sqlite3
+
+# Miscellaneous
+node_modules/
+npm-debug.log
+yarn-error.log
