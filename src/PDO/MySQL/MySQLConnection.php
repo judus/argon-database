@@ -4,31 +4,11 @@ declare(strict_types=1);
 
 namespace Maduser\Argon\Database\PDO\MySQL;
 
-use Maduser\Argon\Database\Contracts\DatabaseConnectionInterface;
 use Maduser\Argon\Database\ParamStyle;
-use PDO;
+use Maduser\Argon\Database\PDO\PdoDatabaseConnection;
 
-final readonly class MySQLConnection implements DatabaseConnectionInterface
+final readonly class MySQLConnection extends PdoDatabaseConnection
 {
-    public function __construct(
-        private PDO $pdo
-    ) {
-        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    }
-
-    public function prepare(string $sql): string
-    {
-        return $sql;
-    }
-
-    public function execute(mixed $stmt, array $params): array
-    {
-        $pdoStmt = $this->pdo->prepare($stmt);
-        $pdoStmt->execute($params);
-
-        return $pdoStmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
     public function getParamStyle(): ParamStyle
     {
         return ParamStyle::NAMED;

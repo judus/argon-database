@@ -4,46 +4,48 @@ declare(strict_types=1);
 
 namespace Maduser\Argon\Database;
 
-use Maduser\Argon\Database\Contracts\DatabaseConnectionInterface;
 use Maduser\Argon\Database\Contracts\RowMapper;
-use Maduser\Argon\Database\Exception\MapperException;
+use Maduser\Argon\Database\Contracts\StatementInterface;
 
 final readonly class QueryRunner
 {
-    /** @param list<scalar> $params */
+    /**
+     * @param list<scalar|null> $params
+     */
     public function __construct(
-        private string $sql,
-        private array $params,
-        private DatabaseConnectionInterface $connection
+        private StatementInterface $statement,
+        private array $params
     ) {
     }
 
-    /** @return list<array<string, null|scalar>> */
+    /** @return list<array<string, scalar|null>> */
     public function fetchAll(): array
     {
-        $stmt = $this->connection->prepare($this->sql);
-
-        return $this->connection->execute($stmt, $this->params);
+        return $this->statement->execute($this->params);
     }
 
-    /** @return array<string, null|scalar>|null */
+    /** @return array<string, scalar|null>|null */
     public function fetchOne(): ?array
     {
-        $rows = $this->fetchAll();
-        return $rows[0] ?? null;
+        if (method_exists($this->statement, 'executeOne')) {
+            /** @var array<string, scalar|null>|null */
+            return $this->statement->executeOne($this->params);
+        }
+
+        return $this->fetchAll()[0] ?? null;
     }
 
     /**
      * @template T
-     * @param class-string<RowMapper<T>> $mapper
+     * @param RowMapper<T> $mapper
+     *
      * @return list<T>
      */
-    public function fetchMapped(string $mapper): array
+    public function fetchMapped(RowMapper $mapper): array
     {
-        if (!is_subclass_of($mapper, RowMapper::class)) {
-            throw new MapperException("Expected instance of RowMapper<T>, got $mapper");
-        }
-
-        return array_map([$mapper, 'map'], $this->fetchAll());
+        return array_map(
+            fn(array $row): mixed => $mapper->map($row),
+            $this->fetchAll()
+        );
     }
 }

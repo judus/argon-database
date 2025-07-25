@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Maduser\Argon\Database\PDO\Postgres;
 
-final class PostgresConfig
+final readonly class PostgresConfig
 {
     public function __construct(
-        public readonly string $host,
-        public readonly int $port,
-        public readonly string $dbName,
-        public readonly string $user,
-        public readonly string $password
+        public string $host,
+        public int $port,
+        public string $dbName,
+        public string $user,
+        public string $password
     ) {}
 
     public function dsn(): string

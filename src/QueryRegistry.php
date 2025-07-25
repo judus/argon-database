@@ -6,25 +6,28 @@ namespace Maduser\Argon\Database;
 
 use Maduser\Argon\Database\Exception\QueryNotFoundException;
 
-final class QueryRegistry
+final readonly class QueryRegistry
 {
-    /** @var array<string, string> */
-    private array $queries = [];
-
-    public function load(string $path): void
-    {
-        foreach (glob($path . '/*.sql') as $file) {
-            $key = basename($file, '.sql');
-            $this->queries[$key] = trim(file_get_contents($file));
-        }
-    }
+    /**
+     * @param list<QueryDefinition> $definitions
+     */
+    public array $definitions;
 
     public function get(string $key): string
     {
-        if (!isset($this->queries[$key])) {
-            throw new QueryNotFoundException("Query not found: $key");
+        $definition = $this->definitions[$key] ?? throw new QueryNotFoundException("Query not found: $key");
+
+        return $definition->sql;
+    }
+
+    public static function fromPath(string $path): self
+    {
+        $definitions = [];
+
+        foreach (glob($path . '/*.sql') ?: [] as $file) {
+            $definitions[] = QueryDefinition::fromFile($file);
         }
 
-        return $this->queries[$key];
+        return new self($definitions);
     }
 }

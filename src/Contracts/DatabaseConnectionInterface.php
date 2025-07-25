@@ -13,16 +13,18 @@ interface DatabaseConnectionInterface
 {
     /**
      * @param string $sql
-     * @return string Prepared statement or identifier
+     *
+     * @return StatementInterface Prepared statement or identifier
      */
-    public function prepare(string $sql): string;
+    public function prepare(string $sql): StatementInterface;
 
     /**
-     * @param string $stmt
-     * @param list<scalar> $params
+     * @param StatementInterface $stmt
+     * @param list<scalar|null> $params
+ *
      * @return list<array<string, null|scalar>>
      */
-    public function execute(string $stmt, array $params): array;
+    public function execute(StatementInterface $stmt, array $params): array;
 
     public function getParamStyle(): ParamStyle;
 }
