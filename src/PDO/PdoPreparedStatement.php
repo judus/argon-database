@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Maduser\Argon\Database\PDO;
 
-use Maduser\Argon\Database\Contracts\StatementInterface;
-use Maduser\Argon\Database\Exception\DatabaseException;
-use PDOStatement;
 use PDO;
 use Throwable;
+use PDOStatement;
+use Maduser\Argon\Database\Exception\DatabaseException;
+use Maduser\Argon\Database\Contracts\StatementInterface;
 
 final readonly class PdoPreparedStatement implements StatementInterface
 {
@@ -18,31 +18,51 @@ final readonly class PdoPreparedStatement implements StatementInterface
     }
 
     /**
-     * @param list<scalar|null> $params
+     * Executes a non-fetching statement.
      *
-     * @return list<array<string, scalar|null>>
+     * @param list<scalar|null> $params
      */
-    public function execute(array $params): array
+    public function execute(array $params): void
     {
         try {
             $this->statement->execute($params);
         } catch (Throwable $e) {
-            throw new DatabaseException('Execution failed', 0, $e);
+            throw DatabaseException::executionFailed($e);
+        }
+    }
+
+    /**
+     * Executes and returns all rows.
+     *
+     * @param list<scalar|null> $params
+     * @return list<array<string, scalar|null>>
+     */
+    public function fetchAll(array $params): array
+    {
+        try {
+            $this->statement->execute($params);
+        } catch (Throwable $e) {
+            throw DatabaseException::fetchAllFailed($e);
         }
 
         /** @var list<array<string, scalar|null>> */
         return $this->statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function executeOne(array $params): ?array
+    /**
+     * Executes and returns one row.
+     *
+     * @param list<scalar|null> $params
+     * @return array<string, scalar|null>|null
+     */
+    public function fetchOne(array $params): ?array
     {
         try {
             $this->statement->execute($params);
         } catch (Throwable $e) {
-            throw new DatabaseException('Execution failed', 0, $e);
+            throw DatabaseException::fetchOneFailed($e);
         }
 
-        /** @var array<string, scalar|null>|false $row */
         $row = $this->statement->fetch(PDO::FETCH_ASSOC);
 
         return $row !== false ? $row : null;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Integration\PgSQL;
+namespace Tests\Integration\Sqlite;
 
 use Tests\AbstractDatabaseTestCase;
 use Tests\Mocks\UserDTO;
@@ -11,8 +11,8 @@ class UserQueryTest extends AbstractDatabaseTestCase
 {
     public function testFindUserByEmail(): void
     {
-        $client = $this->getClient('pgsql');
-        $dir = __DIR__ . '/../../resources/queries/pgsql/';
+        $client = $this->getClient('sqlite');
+        $dir = __DIR__ . '/../../resources/queries/sqlite/';
 
         $runner = $client->file($dir . 'find_user_by_email.sql', ['email' => 'alice@example.com']);
 
@@ -24,8 +24,8 @@ class UserQueryTest extends AbstractDatabaseTestCase
 
     public function testFetchMappedReturnsHydratedDTOs(): void
     {
-        $client = $this->getClient('pgsql');
-        $dir = __DIR__ . '/../../resources/queries/pgsql/';
+        $client = $this->getClient('sqlite');
+        $dir = __DIR__ . '/../../resources/queries/sqlite/';
 
         $runner = $client->file($dir . 'find_all_users.sql');
 

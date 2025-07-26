@@ -10,7 +10,7 @@ namespace Maduser\Argon\Database\Contracts;
 interface RowMapper
 {
     /**
-     * @param array<string, scalar> $row
+     * @param array<string, scalar|null> $row
      * @return T
      */
     public static function map(array $row): mixed;

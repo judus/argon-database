@@ -37,8 +37,11 @@ Thumbs.db
 # Runtime data
 *.sqlite
 *.sqlite3
+!argondb.template.sqlite
 
 # Miscellaneous
 node_modules/
 npm-debug.log
 yarn-error.log
+/.phpunit.cache/
+/phpunit.xml.bak

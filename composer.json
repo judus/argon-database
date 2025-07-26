@@ -27,13 +27,13 @@
         "ext-pdo": "*"
     },
     "require-dev": {
+        "vimeo/psalm": "^6.0",
+        "phpunit/phpunit": "^11.5",
         "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
-        "phpunit/phpunit": "^10.5.45",
         "slevomat/coding-standard": "^8.16",
         "squizlabs/php_codesniffer": "^3.8",
         "swoole/ide-helper": "^5.0",
-        "symfony/var-dumper": "^7.2",
-        "vimeo/psalm": "^5.26"
+        "symfony/var-dumper": "^7.2"
     },
     "scripts": {
         "test": "vendor/bin/phpunit",
@@ -64,7 +64,7 @@
             "dealerdirect/phpcodesniffer-composer-installer": true
         },
         "platform": {
-            "php": "8.2"
+            "php": "8.2.29"
         }
     },
     "minimum-stability": "stable",

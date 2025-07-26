@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Maduser\Argon\Database\PDO\Postgres;
 
 use Maduser\Argon\Database\ParamStyle;
