@@ -78,6 +78,17 @@ $db->query('UPDATE users SET banned = true WHERE id = :id', ['id' => 666])
 
 Returns: `void`
 
+### `file()`
+
+```php
+$users = $db
+    ->file(__DIR__ . '/queries/select_active_users.sql', ['limit' => 10])
+    ->fetchAll();
+```
+
+Throws if the file is unreadable or empty.
+
+
 ## Using DTOs with `RowMapper`
 
 To hydrate rows into typed objects, implement `RowMapper<T>` on your DTO:
