@@ -1,7 +1,7 @@
 {
     "name": "maduser/argon-database",
+    "description": "A PHP package for database interactions",
     "type": "library",
-    "version": "0.0.1",
     "authors": [
         {
             "name": "Julien Duseyau",
@@ -23,7 +23,6 @@
     },
     "require": {
         "php": "^8.2",
-        "ext-swoole": "*",
         "ext-pdo": "*"
     },
     "require-dev": {
